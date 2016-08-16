@@ -23,9 +23,7 @@ WebpackTouch.prototype.apply = function(compiler) {
       }
     }
     if (this.delay) {
-      setTimeout(function() {
-        this.write();
-      }.bind(this), this.delay)
+      setTimeout(this.write.bind(this), this.delay)
       return
     }
     this.write();
