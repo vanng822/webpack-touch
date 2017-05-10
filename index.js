@@ -11,7 +11,11 @@ function WebpackTouch(options) {
 }
 
 WebpackTouch.prototype.write = function() {
-  fs.writeFile(this.filename, 'DONE', {flag: 'w+'});
+  fs.writeFile(this.filename, 'DONE', {flag: 'w+'}, function(err) {
+    if (err) {
+      console.error(err)
+    }
+  });
 }
 
 WebpackTouch.prototype.apply = function(compiler) {
