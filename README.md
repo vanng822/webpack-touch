@@ -1,6 +1,6 @@
 # webpack-touch
 
-Webpack plugin for touch a file when done to tell other process to take action.
+Webpack plugin for touching a file when done to tell other process to take action.
 
 # Usage
 
