@@ -1,37 +1,48 @@
-var fs = require('fs');
+const fs = require('fs');
+const path = require('path');
 
-function WebpackTouch(options) {
-  var options = options || {}
-  this.filename = options.filename;
-  this.delay = options.delay? parseInt(options.delay) : 0;
-  this.ignoreOnError = options.ignoreOnError;
-  if (!this.filename) {
-    throw new Error('Require filename option')
+function addHook(compiler, pluginName, hookName, hook) {
+  if ('hooks' in compiler) {
+    compiler.hooks[hookName].tap(pluginName, hook);
+  } else {
+    compiler.plugin(hookName, hook);
   }
 }
 
-WebpackTouch.prototype.write = function() {
-  fs.writeFile(this.filename, 'DONE', {flag: 'w+'}, function(err) {
-    if (err) {
-      console.error(err)
-    }
-  });
+function WebpackTouch(options) {
+  this.options = options || {};
+  if (!this.options.filename) {
+    throw new Error('Require filename option');
+  }
 }
 
-WebpackTouch.prototype.apply = function(compiler) {
-  compiler.plugin("done", function(stats) {
-    if (this.ignoreOnError) {
-      if (stats.hasErrors()) {
-        console.log("Not touch on error");
-        return;
+WebpackTouch.prototype.apply = function (compiler) {
+  options = this.options;
+
+  addHook(compiler, 'WebpackTouch', 'done', function (stats) {
+    if (options.ignoreOnError && stats.hasErrors()) {
+      console.log('Not touch on error');
+      return;
+    }
+    if (options.delay) {
+      setTimeout(touch, options.delay);
+    } else {
+      touch();
+    }
+  });
+
+  function touch() {
+    try {
+      if (fs.existsSync(options.filename)) {
+        const now = new Date();
+        fs.utimesSync(options.filename, now, now);
+      } else {
+        fs.writeFileSync(options.filename, '');
       }
+    } catch (e) {
+      console.error(err)
     }
-    if (this.delay) {
-      setTimeout(this.write.bind(this), this.delay)
-      return
-    }
-    this.write();
-  }.bind(this));
+  }
 };
 
 module.exports = WebpackTouch;
