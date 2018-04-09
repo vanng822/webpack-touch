@@ -68,4 +68,26 @@ describe('WebpackTouchPlugin', () => {
       })
     ]);
   });
+
+  it(`gets broken without filename`, () => {
+    const WebpackTouch = require('..');
+    try {
+      new WebpackTouch({});
+      assert.fail('Expected an exception but not happened');
+    } catch (e) {
+      assert.ok(e instanceof Error);
+      assert.equal(e.message, 'Require filename option');
+    }
+  });
+
+  it(`doesn't rewrite file content`, () => {
+    const testString = (Math.random() * 0xffffffff).toString(16);
+    fs.writeFileSync(touchedFile, testString);
+
+    return runWebpack(defaultConfig)
+      .then(() => {
+        const fileContent = fs.readFileSync(touchedFile, { encoding: 'utf8' });
+        assert.equal(fileContent, testString);
+      });
+  });
 });
