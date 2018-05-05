@@ -1,8 +1,13 @@
 {
-  "name": "webpack-touch",
-  "version": "0.0.4",
+	"name": "webpack-touch",
+	"version": "1.0.0",
 	"description": "Webpack plugin for touching a file",
-	"keywords": ["webpack", "touch", "reload", "plugin"],
+	"keywords": [
+		"webpack",
+		"touch",
+		"reload",
+		"plugin"
+	],
 	"author": "Nguyen Van Nhu",
 	"homepage": "https://github.com/vanng822/webpack-touch",
 	"main": "./index.js",
