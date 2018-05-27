@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -17,7 +19,7 @@ function WebpackTouch(options) {
 }
 
 WebpackTouch.prototype.apply = function (compiler) {
-  options = this.options;
+  const options = this.options;
 
   addHook(compiler, 'WebpackTouch', 'done', function (stats) {
     if (options.ignoreOnError && stats.hasErrors()) {
