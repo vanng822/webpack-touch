@@ -1,6 +1,6 @@
 {
 	"name": "webpack-touch",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Webpack plugin for touching a file",
 	"keywords": [
 		"webpack",
