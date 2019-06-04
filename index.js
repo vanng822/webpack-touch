@@ -42,7 +42,7 @@ WebpackTouch.prototype.apply = function (compiler) {
         fs.writeFileSync(options.filename, '');
       }
     } catch (e) {
-      console.error(err)
+      console.error(e);
     }
   }
 };
